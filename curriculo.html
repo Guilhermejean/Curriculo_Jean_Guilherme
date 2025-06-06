@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cartão de Serviços Inteligente - Jean Guilherme Freitas Fonseca</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* Light gray background for the page */
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #007BFF 0%, #00BFFF 100%); /* Blue gradient */
+        }
+        .service-icon {
+            transition: transform 0.3s ease-in-out;
+        }
+        .service-icon:hover {
+            transform: scale(1.1);
+        }
+        .contact-icon {
+            transition: color 0.3s ease-in-out;
+        }
+        .contact-icon:hover {
+            color: #007BFF; /* Primary blue on hover */
+        }
+        /* Modal styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1000; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.5); /* Black w/ opacity */
+            padding-top: 60px;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto; /* 5% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+            max-width: 500px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .modal-close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .modal-close:hover,
+        .modal-close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border-left-color: #09f;
+            animation: spin 1s ease infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4 sm:p-6">
+    <div class="w-full max-w-lg bg-white rounded-xl shadow-2xl overflow-hidden">
+        <!-- Header Section -->
+        <div class="gradient-bg text-white p-6 sm:p-8 text-center">
+            <img src="https://placehold.co/120x120/FFFFFF/007BFF?text=JF" alt="Foto de Jean Fonseca" class="w-24 h-24 sm:w-28 sm:h-28 rounded-full mx-auto mb-4 border-4 border-white shadow-lg">
+            <h1 class="text-2xl sm:text-3xl font-bold">Jean Guilherme Freitas Fonseca</h1>
+            <p class="text-base sm:text-lg mt-1 opacity-90">Soluções em Tecnologia & Inovação</p>
+        </div>
+
+        <!-- About Me Section -->
+        <div class="p-6 sm:p-8 border-b border-gray-200">
+            <h2 class="text-xl font-semibold text-gray-800 mb-3 flex items-center">
+                <i class="fas fa-user-tie mr-3 text-blue-500"></i>Sobre Mim
+            </h2>
+            <p class="text-gray-600 text-sm sm:text-base leading-relaxed">
+                Estudante de Engenharia da Computação (UTFPR) apaixonado por tecnologia e inovação. Experiência como Gerente de Projetos em Empresa Júnior, com foco em desenvolvimento de software, web, modelagem e impressão 3D. Buscando aplicar e expandir meus conhecimentos em projetos desafiadores.
+            </p>
+        </div>
+
+        <!-- Services Section -->
+        <div class="p-6 sm:p-8">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-cogs mr-3 text-blue-500"></i>Serviços Ofertados
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <!-- Service Item 1 -->
+                <div class="flex flex-col p-3 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors duration-200">
+                    <div class="flex items-start">
+                        <div class="service-icon text-blue-600 text-2xl mr-4 pt-1"><i class="fas fa-laptop-code"></i></div>
+                        <div>
+                            <h3 class="font-semibold text-gray-700">Desenvolvimento Web</h3>
+                            <p class="text-xs text-gray-500">HTML, CSS, React, Tailwind CSS, WordPress</p>
+                        </div>
+                    </div>
+                    <button onclick="fetchServiceDetail('Desenvolvimento Web', 'HTML, CSS, React, Tailwind CSS, WordPress')" class="mt-2 text-xs text-blue-600 hover:text-blue-800 font-semibold self-start">Detalhar Serviço ✨</button>
+                </div>
+                <!-- Service Item 2 -->
+                <div class="flex flex-col p-3 bg-green-50 rounded-lg hover:bg-green-100 transition-colors duration-200">
+                    <div class="flex items-start">
+                        <div class="service-icon text-green-600 text-2xl mr-4 pt-1"><i class="fas fa-code"></i></div>
+                        <div>
+                            <h3 class="font-semibold text-gray-700">Desenvolvimento de Software</h3>
+                            <p class="text-xs text-gray-500">Java, C++, C, Assembly Mips</p>
+                        </div>
+                    </div>
+                    <button onclick="fetchServiceDetail('Desenvolvimento de Software', 'Java, C++, C, Assembly Mips')" class="mt-2 text-xs text-green-600 hover:text-green-800 font-semibold self-start">Detalhar Serviço ✨</button>
+                </div>
+                <!-- Service Item 3 -->
+                <div class="flex flex-col p-3 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors duration-200">
+                    <div class="flex items-start">
+                        <div class="service-icon text-purple-600 text-2xl mr-4 pt-1"><i class="fas fa-database"></i></div>
+                        <div>
+                            <h3 class="font-semibold text-gray-700">Banco de Dados</h3>
+                            <p class="text-xs text-gray-500">MySQL</p>
+                        </div>
+                    </div>
+                     <button onclick="fetchServiceDetail('Banco de Dados', 'MySQL')" class="mt-2 text-xs text-purple-600 hover:text-purple-800 font-semibold self-start">Detalhar Serviço ✨</button>
+                </div>
+                <!-- Service Item 4 -->
+                <div class="flex flex-col p-3 bg-yellow-50 rounded-lg hover:bg-yellow-100 transition-colors duration-200">
+                    <div class="flex items-start">
+                        <div class="service-icon text-yellow-600 text-2xl mr-4 pt-1"><i class="fas fa-cubes"></i></div>
+                        <div>
+                            <h3 class="font-semibold text-gray-700">Modelagem e Impressão 3D</h3>
+                            <p class="text-xs text-gray-500">Autocad, Autocad Inventor</p>
+                        </div>
+                    </div>
+                    <button onclick="fetchServiceDetail('Modelagem e Impressão 3D', 'Autocad, Autocad Inventor')" class="mt-2 text-xs text-yellow-600 hover:text-yellow-800 font-semibold self-start">Detalhar Serviço ✨</button>
+                </div>
+                 <!-- Service Item 5 -->
+                <div class="flex flex-col p-3 bg-red-50 rounded-lg hover:bg-red-100 transition-colors duration-200">
+                     <div class="flex items-start">
+                        <div class="service-icon text-red-600 text-2xl mr-4 pt-1"><i class="fas fa-microchip"></i></div>
+                        <div>
+                            <h3 class="font-semibold text-gray-700">Arduino & Eletrônica</h3>
+                            <p class="text-xs text-gray-500">Prototipagem, Desenvolvimento, Eletrônica Básica</p>
+                        </div>
+                    </div>
+                    <button onclick="fetchServiceDetail('Arduino & Eletrônica', 'Prototipagem, Desenvolvimento, Eletrônica Básica')" class="mt-2 text-xs text-red-600 hover:text-red-800 font-semibold self-start">Detalhar Serviço ✨</button>
+                </div>
+                <!-- Service Item 6 -->
+                <div class="flex flex-col p-3 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition-colors duration-200">
+                    <div class="flex items-start">
+                        <div class="service-icon text-indigo-600 text-2xl mr-4 pt-1"><i class="fas fa-drafting-compass"></i></div>
+                        <div>
+                            <h3 class="font-semibold text-gray-700">Design e Prototipação</h3>
+                            <p class="text-xs text-gray-500">Figma</p>
+                        </div>
+                    </div>
+                    <button onclick="fetchServiceDetail('Design e Prototipação', 'Figma')" class="mt-2 text-xs text-indigo-600 hover:text-indigo-800 font-semibold self-start">Detalhar Serviço ✨</button>
+                </div>
+                 <!-- Service Item 7 -->
+                 <div class="flex flex-col p-3 bg-teal-50 rounded-lg hover:bg-teal-100 transition-colors duration-200">
+                    <div class="flex items-start">
+                        <div class="service-icon text-teal-600 text-2xl mr-4 pt-1"><i class="fas fa-tasks"></i></div>
+                        <div>
+                            <h3 class="font-semibold text-gray-700">Gerenciamento de Projetos</h3>
+                            <p class="text-xs text-gray-500">Planejamento e Execução</p>
+                        </div>
+                    </div>
+                    <button onclick="fetchServiceDetail('Gerenciamento de Projetos', 'Planejamento e Execução')" class="mt-2 text-xs text-teal-600 hover:text-teal-800 font-semibold self-start">Detalhar Serviço ✨</button>
+                </div>
+                <!-- Service Item 8 -->
+                <div class="flex flex-col p-3 bg-orange-50 rounded-lg hover:bg-orange-100 transition-colors duration-200">
+                     <div class="flex items-start">
+                        <div class="service-icon text-orange-600 text-2xl mr-4 pt-1"><i class="fab fa-aws"></i></div>
+                        <div>
+                            <h3 class="font-semibold text-gray-700">Cloud Computing</h3>
+                            <p class="text-xs text-gray-500">AWS Cloud Foundations</p>
+                        </div>
+                    </div>
+                    <button onclick="fetchServiceDetail('Cloud Computing', 'AWS Cloud Foundations')" class="mt-2 text-xs text-orange-600 hover:text-orange-800 font-semibold self-start">Detalhar Serviço ✨</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gemini Project Idea Generator Section -->
+        <div class="p-6 sm:p-8 border-t border-gray-200">
+            <h2 class="text-xl font-semibold text-gray-800 mb-3 flex items-center">
+                <i class="fas fa-lightbulb mr-3 text-yellow-500"></i>Brainstorm de Projetos com IA ✨
+            </h2>
+            <p class="text-gray-600 text-sm sm:text-base mb-4">
+                Clique no botão abaixo para gerar ideias de projetos inovadores que posso desenvolver utilizando minhas habilidades.
+            </p>
+            <button id="generateProjectIdeas" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center">
+                <i class="fas fa-magic mr-2"></i>Gerar Novas Ideias de Projeto
+            </button>
+        </div>
+
+
+        <!-- Contact Section -->
+        <div class="bg-gray-50 p-6 sm:p-8">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-address-book mr-3 text-blue-500"></i>Entre em Contato
+            </h2>
+            <div class="space-y-3">
+                <a href="tel:+5543996596368" class="flex items-center text-gray-600 hover:text-blue-600 transition-colors duration-200 group">
+                    <i class="fas fa-phone-alt contact-icon text-gray-500 group-hover:text-blue-500 text-lg mr-3"></i>
+                    <span>(43) 99659-6368</span>
+                </a>
+                <a href="mailto:jeanguilherme143@gmail.com" class="flex items-center text-gray-600 hover:text-blue-600 transition-colors duration-200 group">
+                    <i class="fas fa-envelope contact-icon text-gray-500 group-hover:text-blue-500 text-lg mr-3"></i>
+                    <span>jeanguilherme143@gmail.com</span>
+                </a>
+                <p class="flex items-center text-gray-600">
+                    <i class="fas fa-map-marker-alt text-gray-500 text-lg mr-3"></i>
+                    <span>Cambira, Paraná</span>
+                </p>
+            </div>
+        </div>
+
+        <!-- Footer for a professional touch -->
+        <footer class="bg-gray-100 p-4 text-center">
+            <p class="text-xs text-gray-500">&copy; <span id="currentYear"></span> Jean Guilherme Freitas Fonseca. Todos os direitos reservados.</p>
+        </footer>
+    </div>
+
+    <!-- Modal Structure -->
+    <div id="infoModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal()">&times;</span>
+            <h3 id="modalTitle" class="text-lg font-semibold mb-2">Informação</h3>
+            <div id="modalBody">
+                <p>Carregando...</p>
+            </div>
+            <div id="modalSpinner" class="spinner" style="display:none;"></div>
+        </div>
+    </div>
+
+    <script>
+        // Set current year in footer
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        const modal = document.getElementById('infoModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalBody = document.getElementById('modalBody');
+        const modalSpinner = document.getElementById('modalSpinner');
+
+        function showModal(title, contentAsHTML = false, isLoading = false) {
+            modalTitle.textContent = title;
+            if (isLoading) {
+                modalBody.innerHTML = "";
+                modalSpinner.style.display = 'block';
+            } else {
+                if (contentAsHTML) {
+                     modalBody.innerHTML = contentAsHTML;
+                } else {
+                    modalBody.textContent = content;
+                }
+                modalSpinner.style.display = 'none';
+            }
+            modal.style.display = 'block';
+        }
+
+        function closeModal() {
+            modal.style.display = 'none';
+            modalSpinner.style.display = 'none'; // Ensure spinner is hidden
+        }
+
+        // Close modal if user clicks outside of it
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+
+        // Gemini API Integration
+        const API_KEY = ""; // Your API Key - Will be handled by the environment
+        const API_URL_GEMINI = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
+
+        async function callGeminiAPI(prompt) {
+            const payload = {
+                contents: [{ role: "user", parts: [{ text: prompt }] }]
+            };
+            try {
+                const response = await fetch(API_URL_GEMINI, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    console.error("API Error:", errorData);
+                    return `Erro ao contatar a API Gemini: ${errorData.error?.message || response.statusText}`;
+                }
+                const result = await response.json();
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    return result.candidates[0].content.parts[0].text;
+                } else {
+                    console.error("Resposta inesperada da API:", result);
+                    return "Não foi possível obter uma resposta da IA. Verifique o console para mais detalhes.";
+                }
+            } catch (error) {
+                console.error("Erro na chamada da API:", error);
+                return "Ocorreu um erro ao tentar se comunicar com o serviço de IA. Verifique sua conexão e tente novamente.";
+            }
+        }
+
+        // Feature 1: Project Idea Generator
+        const generateProjectIdeasButton = document.getElementById('generateProjectIdeas');
+        generateProjectIdeasButton.addEventListener('click', async () => {
+            showModal("Gerando Ideias de Projeto...", "", true);
+            const prompt = `Você é um assistente criativo e especialista em tecnologia. Jean Guilherme Freitas Fonseca é um estudante de Engenharia da Computação (UTFPR) com as seguintes competências:
+- Desenvolvimento Web: HTML, CSS, React, Tailwind CSS, WordPress
+- Desenvolvimento de Software: Java, C++, C, Assembly Mips
+- Banco de Dados: MySQL
+- Modelagem e Impressão 3D: Autocad, Autocad Inventor
+- Arduino & Eletrônica: Prototipagem, Desenvolvimento, Eletrônica Básica
+- Design e Prototipação: Figma
+- Gerenciamento de Projetos
+- Cloud Computing: AWS Cloud Foundations
+
+Baseado nessas habilidades, gere 3 ideias de projetos concisas e inovadoras que Jean poderia desenvolver para demonstrar seu potencial. Para cada ideia, forneça:
+1. Um título chamativo para o projeto.
+2. Uma breve descrição (1-2 frases) do projeto e seu objetivo.
+3. Quais habilidades chave de Jean seriam destacadas.
+
+Formate a resposta em HTML, com cada ideia dentro de um <div class="mb-4 p-3 border rounded-md">, o título em <h3> e a descrição e habilidades em <p>.`;
+
+            const ideas = await callGeminiAPI(prompt);
+            if (ideas.startsWith("Erro") || ideas.startsWith("Não foi possível")) {
+                 showModal("Erro ao Gerar Ideias", ideas);
+            } else {
+                 showModal("Ideias de Projeto Geradas pela IA ✨", ideas, true); // contentAsHTML = true
+            }
+        });
+
+        // Feature 2: Detail Service
+        async function fetchServiceDetail(serviceName, technologies) {
+            showModal(`Detalhando: ${serviceName}...`, "", true);
+            const prompt = `Jean Guilherme Freitas Fonseca é um estudante de Engenharia da Computação (UTFPR) apaixonado por tecnologia e inovação.
+Explique brevemente (em 2-3 frases) como Jean pode aplicar suas habilidades em '${serviceName}' para ajudar um cliente ou em um projeto.
+Mencione as seguintes tecnologias/competências relevantes quando apropriado: ${technologies}.
+Seja direto e foque nos benefícios ou aplicações práticas.`;
+
+            const detail = await callGeminiAPI(prompt);
+             if (detail.startsWith("Erro") || detail.startsWith("Não foi possível")) {
+                 showModal(`Erro ao Detalhar ${serviceName}`, detail);
+            } else {
+                showModal(`Detalhes sobre: ${serviceName} ✨`, `<p class="text-sm text-gray-700 leading-relaxed">${detail.replace(/\n/g, '<br>')}</p>`, true);
+            }
+        }
+
+    </script>
+</body>
+</html>
