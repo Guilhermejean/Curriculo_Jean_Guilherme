@@ -80,6 +80,7 @@
     </style>
 </head>
 <body class="flex items-center justify-center min-h-screen p-4 sm:p-6">
+   
     <div class="w-full max-w-lg bg-white rounded-xl shadow-2xl overflow-hidden">
         <!-- Header Section -->
         <div class="gradient-bg text-white p-6 sm:p-8 text-center">
@@ -284,9 +285,11 @@
                 closeModal();
             }
         }
+         const dotenv = require('dotenv');
 
+dotenv.config();
         // Gemini API Integration
-        const API_KEY = ""; // Your API Key - Will be handled by the environment
+        const API_KEY = API_URL_GEMINI ; // Your API Key - Will be handled by the environment
         const API_URL_GEMINI = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
 
         async function callGeminiAPI(prompt) {
