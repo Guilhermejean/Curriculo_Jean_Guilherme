@@ -80,7 +80,6 @@
     </style>
 </head>
 <body class="flex items-center justify-center min-h-screen p-4 sm:p-6">
-   
     <div class="w-full max-w-lg bg-white rounded-xl shadow-2xl overflow-hidden">
         <!-- Header Section -->
         <div class="gradient-bg text-white p-6 sm:p-8 text-center">
@@ -202,7 +201,7 @@
                 <i class="fas fa-lightbulb mr-3 text-yellow-500"></i>Brainstorm de Projetos com IA ✨
             </h2>
             <p class="text-gray-600 text-sm sm:text-base mb-4">
-                Clique no botão abaixo para gerar ideias de projetos inovadores que posso desenvolver utilizando minhas habilidades.
+                Clique no botão abaixo para gerar ideias de projetos inovadores que posso desenvolver utilizando minhas habilidades. (Requer chave de API configurada).
             </p>
             <button id="generateProjectIdeas" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center">
                 <i class="fas fa-magic mr-2"></i>Gerar Novas Ideias de Projeto
@@ -258,14 +257,14 @@
         const modalBody = document.getElementById('modalBody');
         const modalSpinner = document.getElementById('modalSpinner');
 
-        function showModal(title, contentAsHTML = false, isLoading = false) {
+        function showModal(title, content, contentAsHTML = false, isLoading = false) { // Adjusted parameters for clarity
             modalTitle.textContent = title;
             if (isLoading) {
-                modalBody.innerHTML = "";
+                modalBody.innerHTML = ""; // Clear previous content
                 modalSpinner.style.display = 'block';
             } else {
-                if (contentAsHTML) {
-                     modalBody.innerHTML = contentAsHTML;
+                 if (contentAsHTML) {
+                    modalBody.innerHTML = content;
                 } else {
                     modalBody.textContent = content;
                 }
@@ -285,14 +284,20 @@
                 closeModal();
             }
         }
-         const dotenv = require('dotenv');
-
-dotenv.config();
+        
         // Gemini API Integration
-        const API_KEY = API_URL_GEMINI ; // Your API Key - Will be handled by the environment
+        // IMPORTANTE: Para que as funcionalidades da API Gemini funcionem, 
+        // esta chave precisa ser uma chave válida.
+        // Deixá-la como "" fará com que as chamadas à API falhem.
+        // NUNCA coloque sua chave de API diretamente aqui se este código for para um repositório PÚBLICO.
+        // Para o GitHub Pages, a funcionalidade da Gemini não funcionará de forma segura sem um backend.
+        const API_KEY = ""; // MANTIDO VAZIO. Preencha para teste local se desejar, mas não faça commit público.
         const API_URL_GEMINI = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
 
         async function callGeminiAPI(prompt) {
+            if (!API_KEY) {
+                return "Erro: A chave da API Gemini não está configurada. As funcionalidades de IA estão desativadas.";
+            }
             const payload = {
                 contents: [{ role: "user", parts: [{ text: prompt }] }]
             };
@@ -305,6 +310,13 @@ dotenv.config();
                 if (!response.ok) {
                     const errorData = await response.json();
                     console.error("API Error:", errorData);
+                     // Check for specific API key related errors
+                    if (response.status === 400 && errorData.error && errorData.error.message.toLowerCase().includes("api key not valid")) {
+                        return "Erro: A chave da API Gemini fornecida não é válida. Verifique a chave e tente novamente.";
+                    }
+                    if (response.status === 403 && errorData.error && errorData.error.message.toLowerCase().includes("permission denied")) {
+                        return "Erro: Permissão negada para acessar a API Gemini. Verifique as configurações da sua chave API.";
+                    }
                     return `Erro ao contatar a API Gemini: ${errorData.error?.message || response.statusText}`;
                 }
                 const result = await response.json();
@@ -325,7 +337,7 @@ dotenv.config();
         // Feature 1: Project Idea Generator
         const generateProjectIdeasButton = document.getElementById('generateProjectIdeas');
         generateProjectIdeasButton.addEventListener('click', async () => {
-            showModal("Gerando Ideias de Projeto...", "", true);
+            showModal("Gerando Ideias de Projeto...", "", false, true); // isLoading = true
             const prompt = `Você é um assistente criativo e especialista em tecnologia. Jean Guilherme Freitas Fonseca é um estudante de Engenharia da Computação (UTFPR) com as seguintes competências:
 - Desenvolvimento Web: HTML, CSS, React, Tailwind CSS, WordPress
 - Desenvolvimento de Software: Java, C++, C, Assembly Mips
@@ -345,15 +357,15 @@ Formate a resposta em HTML, com cada ideia dentro de um <div class="mb-4 p-3 bor
 
             const ideas = await callGeminiAPI(prompt);
             if (ideas.startsWith("Erro") || ideas.startsWith("Não foi possível")) {
-                 showModal("Erro ao Gerar Ideias", ideas);
+                 showModal("Erro ao Gerar Ideias", ideas, false, false); // isLoading = false
             } else {
-                 showModal("Ideias de Projeto Geradas pela IA ✨", ideas, true); // contentAsHTML = true
+                 showModal("Ideias de Projeto Geradas pela IA ✨", ideas, true, false); // contentAsHTML = true, isLoading = false
             }
         });
 
         // Feature 2: Detail Service
         async function fetchServiceDetail(serviceName, technologies) {
-            showModal(`Detalhando: ${serviceName}...`, "", true);
+            showModal(`Detalhando: ${serviceName}...`, "", false, true); // isLoading = true
             const prompt = `Jean Guilherme Freitas Fonseca é um estudante de Engenharia da Computação (UTFPR) apaixonado por tecnologia e inovação.
 Explique brevemente (em 2-3 frases) como Jean pode aplicar suas habilidades em '${serviceName}' para ajudar um cliente ou em um projeto.
 Mencione as seguintes tecnologias/competências relevantes quando apropriado: ${technologies}.
@@ -361,9 +373,9 @@ Seja direto e foque nos benefícios ou aplicações práticas.`;
 
             const detail = await callGeminiAPI(prompt);
              if (detail.startsWith("Erro") || detail.startsWith("Não foi possível")) {
-                 showModal(`Erro ao Detalhar ${serviceName}`, detail);
+                 showModal(`Erro ao Detalhar ${serviceName}`, detail, false, false); // isLoading = false
             } else {
-                showModal(`Detalhes sobre: ${serviceName} ✨`, `<p class="text-sm text-gray-700 leading-relaxed">${detail.replace(/\n/g, '<br>')}</p>`, true);
+                showModal(`Detalhes sobre: ${serviceName} ✨`, `<p class="text-sm text-gray-700 leading-relaxed">${detail.replace(/\n/g, '<br>')}</p>`, true, false); // contentAsHTML = true, isLoading = false
             }
         }
 
